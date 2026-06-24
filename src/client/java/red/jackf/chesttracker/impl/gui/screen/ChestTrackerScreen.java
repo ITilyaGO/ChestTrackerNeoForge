@@ -89,7 +89,7 @@ public class ChestTrackerScreen extends Screen {
         if (bank == null) {
             if (!initializedOnce) {
                 initializedOnce = true;
-                Minecraft.getInstance().setScreen(new MemoryBankManagerScreen(parent, () -> new ChestTrackerScreen(this)));
+                Minecraft.getInstance().gui.setScreen(new MemoryBankManagerScreen(parent, () -> new ChestTrackerScreen(this)));
             } else {
                 this.onClose();
             }
@@ -171,7 +171,7 @@ public class ChestTrackerScreen extends Screen {
                         BUTTON_SIZE,
                         BUTTON_SIZE,
                         GuiUtil.twoSprite("mod_settings/button"),
-                        button -> Minecraft.getInstance().setScreen(ChestTrackerConfigScreenBuilder.build(this))))
+                        button -> Minecraft.getInstance().gui.setScreen(ChestTrackerConfigScreenBuilder.build(this))))
                 .setTooltip(Tooltip.create(translatable("chesttracker.gui.modSettings")));
 
         // change memory bank
@@ -442,7 +442,7 @@ public class ChestTrackerScreen extends Screen {
 
     @Override
     public void onClose() {
-        Minecraft.getInstance().setScreen(parent);
+        Minecraft.getInstance().gui.setScreen(parent);
     }
 
     @Override
@@ -451,16 +451,16 @@ public class ChestTrackerScreen extends Screen {
     }
 
     private void openMemoryManager(Button ignored) {
-        Minecraft.getInstance().setScreen(new MemoryBankManagerScreen(
+        Minecraft.getInstance().gui.setScreen(new MemoryBankManagerScreen(
                 () -> MemoryBankAccessImpl.INSTANCE.getLoadedInternal().isEmpty() ? parent : this,
                 // return to this screen unless the memories have been unloaded, in which case go to the parent
-                () -> Minecraft.getInstance().setScreen(this)
+                () -> Minecraft.getInstance().gui.setScreen(this)
         ));
     }
 
     private void openMemoryBankSettings(Button button) {
         MemoryBankAccessImpl.INSTANCE.getLoadedInternal().ifPresent(bank -> {
-            Minecraft.getInstance().setScreen(new EditMemoryBankScreen(
+            Minecraft.getInstance().gui.setScreen(new EditMemoryBankScreen(
                     this,
                     this::updateItems,
                     bank.getId()
