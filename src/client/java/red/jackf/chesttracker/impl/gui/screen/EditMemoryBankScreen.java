@@ -28,6 +28,7 @@ import red.jackf.chesttracker.impl.memory.metadata.IntegritySettings;
 import red.jackf.chesttracker.impl.memory.metadata.SearchSettings;
 import red.jackf.chesttracker.impl.rendering.NameRenderMode;
 import red.jackf.chesttracker.impl.storage.ConnectionSettings;
+import red.jackf.chesttracker.impl.storage.GlobalMemoryBankDefaults;
 import red.jackf.chesttracker.impl.storage.Storage;
 import red.jackf.chesttracker.impl.util.GuiUtil;
 import red.jackf.chesttracker.impl.util.I18n;
@@ -184,9 +185,10 @@ public class EditMemoryBankScreen extends BaseUtilScreen {
         // mark default if ingame
         if (inGame) {
             Optional<Coordinate> coord = Coordinate.getCurrent();
-            coord.map(coordinate -> ConnectionSettings.get(coordinate.id()))
-                 .ifPresent(connectionSettings -> saveCreateLoadRow.add((x, y, width, height) -> {
-                     if (connectionSettings.memoryBankIdOverride().orElse(coord.get().id())
+            coord.ifPresent(coordinate -> {
+                var connectionSettings = ConnectionSettings.get(coordinate.id());
+                saveCreateLoadRow.add((x, y, width, height) -> {
+                    if (connectionSettings != null && connectionSettings.memoryBankIdOverride().orElse(coordinate.id())
                                            .equals(this.memoryBank.id())) {
                          // disable if already the default for the current connection
                          var defaultButton = Button.builder(translatable("chesttracker.gui.editMemoryBank.alreadyDefault"), b -> {
@@ -201,9 +203,15 @@ public class EditMemoryBankScreen extends BaseUtilScreen {
                                       .bounds(x, y, width, height)
                                       .build();
                      }
-                 }));
+                });
 
+            });
         }
+
+        saveCreateLoadRow.add((x, y, width, height) -> Button.builder(translatable("chesttracker.gui.editMemoryBank.saveGlobalDefaults"), this::saveGlobalDefaults)
+                                                               .tooltip(Tooltip.create(translatable("chesttracker.gui.editMemoryBank.saveGlobalDefaults.tooltip")))
+                                                               .bounds(x, y, width, height)
+                                                               .build());
 
         addBottomButtons(bottomButtons);
 
@@ -677,6 +685,10 @@ public class EditMemoryBankScreen extends BaseUtilScreen {
                                                                                                             .id()) ? Optional.empty() : Optional.of(this.memoryBank.id())));
             button.active = false;
         }
+    }
+
+    private void saveGlobalDefaults(Button ignored) {
+        GlobalMemoryBankDefaults.set(this.memoryBank.metadata());
     }
 
     // Load a memory bank, then run the load callback.

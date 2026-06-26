@@ -83,6 +83,21 @@ public class Metadata {
         return blank;
     }
 
+    public static Metadata fromDefaults(@Nullable String name, Metadata defaults) {
+        return new Metadata(name,
+                Instant.now(),
+                0L,
+                defaults.compatibilitySettings.copy(),
+                defaults.filteringSettings.copy(),
+                defaults.integritySettings.copy(),
+                defaults.searchSettings.copy(),
+                defaults.visualSettings.copy());
+    }
+
+    public Metadata copyAsDefaults() {
+        return fromDefaults(null, this);
+    }
+
     @Nullable
     public String getName() {
         return name;
