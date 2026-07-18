@@ -29,7 +29,8 @@ public class MemoryBankAccessImpl implements MemoryBankAccess {
     public boolean loadOrCreate(String memoryBankId, String creationName, @Nullable Metadata defaultMetadata) {
         INSTANCE.unload();
         loaded = Storage.load(memoryBankId).orElseGet(() -> {
-            var metadata = Metadata.fromDefaults(creationName, defaultMetadata == null ? GlobalMemoryBankDefaults.get() : defaultMetadata);
+            var defaults = defaultMetadata == null ? GlobalMemoryBankDefaults.get() : defaultMetadata;
+            var metadata = Metadata.fromDefaults(creationName, defaults, defaultMetadata == null || defaults.usesGlobalDefaults());
             var bank = new MemoryBankImpl(metadata, new HashMap<>());
             bank.setId(memoryBankId);
             return bank;
