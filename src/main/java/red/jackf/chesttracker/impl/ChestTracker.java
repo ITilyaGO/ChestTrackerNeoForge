@@ -46,6 +46,7 @@ public class ChestTracker {
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::onRegisterReloadListeners);
         modEventBus.addListener(ChestTracker::registerKeyMappings);
+        modEventBus.addListener(Rendering::registerPipelines);
         NeoForge.EVENT_BUS.register(ClientEventHandler.class);
         NeoForge.EVENT_BUS.register(ScreenEventHandler.class);
     }

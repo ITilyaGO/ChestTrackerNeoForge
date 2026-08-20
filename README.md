@@ -19,7 +19,7 @@ The built JAR is written to `build/libs/`.
 
 ## Port status
 
-Core container memory, storage, search, inventory controls and configuration are ported. World highlights and labels are currently disabled. Optional Litematica, Jade, WTHIT, ShulkerBoxTooltip and Searchables integrations are not included in this build.
+Core container memory, storage, search, inventory controls, configuration and world highlights are ported. World labels are currently disabled. Optional Litematica, Jade, WTHIT, ShulkerBoxTooltip and Searchables integrations are not included in this build.
 
 This branch also contains NeoForge lifecycle fixes for item components used by the Shared Ender Chest integration.
 
