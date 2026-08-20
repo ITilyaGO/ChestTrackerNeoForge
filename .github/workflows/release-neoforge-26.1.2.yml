@@ -1,0 +1,50 @@
+name: Release NeoForge 26.1.2
+
+on:
+  push:
+    branches:
+      - '26.1.2'
+    paths:
+      - '.github/workflows/release-neoforge-26.1.2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build
+        run: ./gradlew build
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v2.8.3+26.1.2-neoforge
+          target_commitish: ${{ github.sha }}
+          name: Chest Tracker 2.8.3 — NeoForge 26.1.2
+          prerelease: true
+          generate_release_notes: false
+          body: |
+            Unofficial NeoForge port of Chest Tracker for Minecraft 26.1.2.
+
+            Requirements:
+            - Minecraft 26.1.2
+            - NeoForge 26.1.2.95 or newer
+            - YACL 3.9.1+26.1 for NeoForge
+
+            Core container memory, storage and search are available. World highlights and labels, plus optional Litematica, Jade, WTHIT, ShulkerBoxTooltip and Searchables integrations, are currently disabled.
+          files: build/libs/chesttracker-2.8.3+26.1.2-neoforge.jar
