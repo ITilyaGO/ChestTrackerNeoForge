@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "red.jackf.jackfredlib.client.mixins.gps",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "GuiAccessor",
+    "MinecraftServerAccessor",
+    "PlayerTabOverlayAccessor",
+    "RealmsConnectMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
