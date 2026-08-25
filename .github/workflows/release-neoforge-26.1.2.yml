@@ -33,9 +33,9 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v2.8.4+26.1.2-neoforge
+          tag_name: v2.8.5+26.1.2-neoforge
           target_commitish: ${{ github.sha }}
-          name: Chest Tracker 2.8.4 — NeoForge 26.1.2
+          name: Chest Tracker 2.8.5 — NeoForge 26.1.2
           prerelease: true
           generate_release_notes: false
           body: |
@@ -50,5 +50,7 @@ jobs:
 
             This release restores pulsing container highlights, including double chests. Highlights remain visible through blocks and fade out after ten seconds.
 
+            Press T while hovering an item in any inventory to find matching saved containers. The inventory closes only when the item is found. The key can be changed in Minecraft's Controls settings.
+
             World labels and optional Litematica, Jade, WTHIT, ShulkerBoxTooltip and Searchables integrations are currently disabled.
-          files: build/libs/chesttracker-2.8.4+26.1.2-neoforge.jar
+          files: build/libs/chesttracker-2.8.5+26.1.2-neoforge.jar

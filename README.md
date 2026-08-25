@@ -21,6 +21,8 @@ The built JAR is written to `build/libs/`.
 
 Core container memory, storage, search, inventory controls, configuration and world highlights are ported. World labels are currently disabled. Optional Litematica, Jade, WTHIT, ShulkerBoxTooltip and Searchables integrations are not included in this build.
 
+Press `T` while hovering an item in any inventory to find matching saved containers. The inventory closes only when a match exists. This key can be changed in Minecraft's Controls settings.
+
 This branch also contains NeoForge lifecycle fixes for item components used by the Shared Ender Chest integration.
 
 ## Credits and license

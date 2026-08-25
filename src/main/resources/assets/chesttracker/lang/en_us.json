@@ -1,5 +1,6 @@
 {
   "key.chesttracker.open_gui": "Open Chest Tracker GUI",
+  "key.chesttracker.search_hovered_item": "Find Hovered Item",
 
   "chesttracker.title": "Chest Tracker",
   "chesttracker.compatibility.brand": "Client-side preview via %s",

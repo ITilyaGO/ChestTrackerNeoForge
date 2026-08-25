@@ -1,5 +1,6 @@
 package red.jackf.chesttracker.impl.gui.invbutton;
 
+import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.Nullable;
 import red.jackf.chesttracker.impl.gui.invbutton.ui.InventoryButton;
 import red.jackf.chesttracker.impl.providers.ScreenOpenContextImpl;
@@ -15,6 +16,9 @@ public interface CTButtonScreenDuck {
     int chesttracker$getWidth();
 
     int chesttracker$getHeight();
+
+    @Nullable
+    Slot chesttracker$getHoveredSlot();
 
     void chesttracker$setButton(InventoryButton button);
 

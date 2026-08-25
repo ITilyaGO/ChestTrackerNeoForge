@@ -38,6 +38,28 @@ public final class WhereIsItClient {
         return started;
     }
 
+    /**
+     * Runs a search without changing the current highlights or screen when no matching container exists.
+     */
+    public static boolean doSearchIfFound(SearchRequest request) {
+        List<SearchResult> results = new ArrayList<>();
+        boolean started = SearchInvoker.EVENT.invoker().search(request, results::addAll);
+        if (results.isEmpty()) return started;
+
+        closedScreenThisSearch = false;
+        Rendering.resetSearchTime();
+        Rendering.clearResults();
+        Rendering.setLastRequest(request);
+        recieveResults(results);
+
+        Minecraft client = Minecraft.getInstance();
+        if (client.player != null && client.screen != null) {
+            closedScreenThisSearch = true;
+            client.player.closeContainer();
+        }
+        return started;
+    }
+
     public static void clearResults() {
         RESULTS.clear();
         Rendering.clearResults();

@@ -21,6 +21,9 @@ import red.jackf.chesttracker.impl.providers.ProviderHandler;
 import red.jackf.chesttracker.impl.providers.ScreenCloseContextImpl;
 import red.jackf.chesttracker.impl.providers.ScreenOpenContextImpl;
 import red.jackf.whereisit.client.api.events.ShouldIgnoreKey;
+import red.jackf.whereisit.api.SearchRequest;
+import red.jackf.whereisit.client.api.events.SearchInvoker;
+import red.jackf.whereisit.client.api.events.SearchRequestPopulator;
 
 import java.util.Optional;
 
@@ -66,6 +69,23 @@ public final class ScreenEventHandler {
             InventoryButtonFeature.onScreenOpen(client, screen, event.getScreen().width, event.getScreen().height)
                     .ifPresent(event::addListener);
         }
+    }
+
+    @SubscribeEvent
+    public static void onScreenKeyPressedPre(ScreenEvent.KeyPressed.Pre event) {
+        Screen screen = event.getScreen();
+        Minecraft client = Minecraft.getInstance();
+        if (client.level == null || !(screen instanceof AbstractContainerScreen<?> containerScreen)) return;
+        if (ShouldIgnoreKey.EVENT.invoker().shouldIgnoreKey()) return;
+        if (ChestTracker.SEARCH_HOVERED_ITEM == null || !ChestTracker.SEARCH_HOVERED_ITEM.matches(event.getKeyEvent())) return;
+
+        var hoveredSlot = ((CTButtonScreenDuck) containerScreen).chesttracker$getHoveredSlot();
+        if (hoveredSlot == null || !hoveredSlot.hasItem()) return;
+
+        SearchRequest request = new SearchRequest();
+        SearchRequestPopulator.addItemStack(request, hoveredSlot.getItem(), SearchRequestPopulator.Context.INVENTORY_PRECISE);
+        SearchInvoker.doSearchIfFound(request);
+        event.setCanceled(true);
     }
 
     @SubscribeEvent

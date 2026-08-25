@@ -38,6 +38,7 @@ public class ChestTracker {
     public static final String ID = "chesttracker";
     public static final Logger LOGGER = LogManager.getLogger();
     public static KeyMapping OPEN_GUI;
+    public static KeyMapping SEARCH_HOVERED_ITEM;
     public static final KeyMapping.Category CHESTTRACKER_CATEGORY =
             new KeyMapping.Category(Identifier.fromNamespaceAndPath(ID, "title"));
     private static boolean shouldSkipProviderForNextGuiClose = false;
@@ -61,7 +62,9 @@ public class ChestTracker {
 
     public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
         OPEN_GUI = new KeyMapping("key.chesttracker.open_gui", InputConstants.Type.KEYSYM, InputConstants.KEY_GRAVE, CHESTTRACKER_CATEGORY);
+        SEARCH_HOVERED_ITEM = new KeyMapping("key.chesttracker.search_hovered_item", InputConstants.Type.KEYSYM, InputConstants.KEY_T, CHESTTRACKER_CATEGORY);
         event.register(OPEN_GUI);
+        event.register(SEARCH_HOVERED_ITEM);
     }
 
     private void onRegisterReloadListeners(AddClientReloadListenersEvent event) {

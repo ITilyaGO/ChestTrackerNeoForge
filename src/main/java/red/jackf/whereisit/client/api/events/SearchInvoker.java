@@ -22,5 +22,9 @@ public interface SearchInvoker {
         return WhereIsItClient.doSearch(request);
     }
 
+    static boolean doSearchIfFound(SearchRequest request) {
+        return WhereIsItClient.doSearchIfFound(request);
+    }
+
     boolean search(SearchRequest request, Consumer<Collection<SearchResult>> resultConsumer);
 }

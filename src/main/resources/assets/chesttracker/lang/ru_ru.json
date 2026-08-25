@@ -1,5 +1,6 @@
 {
   "key.chesttracker.open_gui": "Открыть меню",
+  "key.chesttracker.search_hovered_item": "Найти предмет под курсором",
   "chesttracker.title": "Chest Tracker",
   "chesttracker.compatibility.brand": "Предпросмотр на клиенте через %s",
   "chesttracker.compatibility.litematica.search": "Поиск",
