@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -56,6 +57,22 @@ public class MemoryIntegrity {
                     }).build());
 
     private MemoryIntegrity() {
+    }
+
+    static boolean isMissingLoadedContainer(Level level, BlockPos pos, Memory memory) {
+        if (memory.entityId() != null || memory.container().isEmpty()) return false;
+        if (isMissingLoadedContainerBlock(level, pos, memory)) return true;
+        for (BlockPos otherPos : memory.otherPositions()) {
+            if (isMissingLoadedContainerBlock(level, otherPos, memory)) return true;
+        }
+        return false;
+    }
+
+    private static boolean isMissingLoadedContainerBlock(Level level, BlockPos pos, Memory memory) {
+        if (!level.isLoaded(pos)) return false;
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        return blockEntity == null
+                || !((BlockEntityTypeAccessor) blockEntity.getType()).getValidBlocks().contains(memory.container().get());
     }
 
     public static void setup() {
@@ -163,8 +180,7 @@ public class MemoryIntegrity {
                         && level.isLoaded(currentPos)
                         && currentPos.distSqr(player.blockPosition()) < PERIODIC_CHECK_RANGE_SQUARED
                         && currentMemory.container().isPresent()) {
-                    BlockEntity be = level.getBlockEntity(currentPos);
-                    if (be == null || !((BlockEntityTypeAccessor) be.getType()).getValidBlocks().contains(currentMemory.container().get())) {
+                    if (isMissingLoadedContainer(level, currentPos, currentMemory)) {
                         memoryBank.removeMemory(playerCurrentKey, currentPos);
                         LOGGER.debug("Periodic Check: Removing {}@{}", currentPos, currentMemoryKeyId);
                     }

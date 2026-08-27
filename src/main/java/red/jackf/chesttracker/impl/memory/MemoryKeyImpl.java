@@ -181,6 +181,24 @@ public class MemoryKeyImpl implements MemoryKey {
         return Optional.ofNullable(this.memories.get(this.connected.getOrDefault(pos, pos)));
     }
 
+    /**
+     * Removes block-backed memories whose chunks are loaded but no longer contain the recorded container.
+     * Unloaded chunks and entity-backed memories are deliberately left untouched.
+     *
+     * @return number of removed memories
+     */
+    public int pruneMissingLoadedContainers() {
+        var level = Minecraft.getInstance().level;
+        if (level == null) return 0;
+
+        List<BlockPos> missing = this.memories.entrySet().stream()
+                .filter(entry -> MemoryIntegrity.isMissingLoadedContainer(level, entry.getKey(), entry.getValue()))
+                .map(Map.Entry::getKey)
+                .toList();
+        missing.forEach(this::remove);
+        return missing.size();
+    }
+
     @Override
     public List<ItemStack> getCounts(CountingPredicate predicate, StackMergeMode stackMergeMode, boolean unpackNested) {
         var level = Minecraft.getInstance().level;

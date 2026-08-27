@@ -17,6 +17,8 @@ public class IntegritySettings {
                                 .forGetter(settings -> Optional.of(settings.removeOnPlayerBlockBreak)),
                         Codec.BOOL.optionalFieldOf("checkPeriodicallyForMissingBlocks")
                                 .forGetter(settings -> Optional.of(settings.checkPeriodicallyForMissingBlocks)),
+                        Codec.BOOL.optionalFieldOf("enhancedCleanup")
+                                .forGetter(settings -> Optional.of(settings.enhancedCleanup)),
                         JFLCodecs.forEnum(MemoryLifetime.class).optionalFieldOf("memoryLifetime")
                                 .forGetter(settings -> Optional.of(settings.memoryLifetime)),
                         Codec.BOOL.optionalFieldOf("preserveNamed")
@@ -24,10 +26,11 @@ public class IntegritySettings {
                         JFLCodecs.forEnum(LifetimeCountMode.class).optionalFieldOf("lifetimeCountMode")
                                 .forGetter(settings -> Optional.of(settings.lifetimeCountMode))
                 )
-                .apply(instance, (removeOnPlayerBlockBreak, checkPeriodicallyForMissingBlocks, memoryLifetime, preserveNamed, lifetimeCountMode) ->
+                .apply(instance, (removeOnPlayerBlockBreak, checkPeriodicallyForMissingBlocks, enhancedCleanup, memoryLifetime, preserveNamed, lifetimeCountMode) ->
                         new IntegritySettings(
                                 removeOnPlayerBlockBreak.orElse(def.removeOnPlayerBlockBreak),
                                 checkPeriodicallyForMissingBlocks.orElse(def.checkPeriodicallyForMissingBlocks),
+                                enhancedCleanup.orElse(def.enhancedCleanup),
                                 memoryLifetime.orElse(def.memoryLifetime),
                                 preserveNamed.orElse(def.preserveNamed),
                                 lifetimeCountMode.orElse(def.lifetimeCountMode)
@@ -36,6 +39,7 @@ public class IntegritySettings {
 
     public boolean removeOnPlayerBlockBreak = true;
     public boolean checkPeriodicallyForMissingBlocks = true;
+    public boolean enhancedCleanup = true;
     public MemoryLifetime memoryLifetime = MemoryLifetime.TWELVE_HOURS;
     public boolean preserveNamed = true;
     public LifetimeCountMode lifetimeCountMode = LifetimeCountMode.LOADED_TIME;
@@ -45,19 +49,21 @@ public class IntegritySettings {
 
     public IntegritySettings(boolean removeOnPlayerBlockBreak,
                              boolean checkPeriodicallyForMissingBlocks,
+                             boolean enhancedCleanup,
                              MemoryLifetime memoryLifetime,
                              boolean preserveNamed,
                              LifetimeCountMode lifetimeCountMode) {
         this();
         this.removeOnPlayerBlockBreak = removeOnPlayerBlockBreak;
         this.checkPeriodicallyForMissingBlocks = checkPeriodicallyForMissingBlocks;
+        this.enhancedCleanup = enhancedCleanup;
         this.memoryLifetime = memoryLifetime;
         this.preserveNamed = preserveNamed;
         this.lifetimeCountMode = lifetimeCountMode;
     }
 
     public IntegritySettings copy() {
-        return new IntegritySettings(removeOnPlayerBlockBreak, checkPeriodicallyForMissingBlocks, memoryLifetime, preserveNamed, lifetimeCountMode);
+        return new IntegritySettings(removeOnPlayerBlockBreak, checkPeriodicallyForMissingBlocks, enhancedCleanup, memoryLifetime, preserveNamed, lifetimeCountMode);
     }
 
     public enum LifetimeCountMode {

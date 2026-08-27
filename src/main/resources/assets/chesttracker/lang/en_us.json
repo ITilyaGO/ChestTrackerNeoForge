@@ -103,6 +103,8 @@
   "chesttracker.gui.editMemoryBank.integrity.preserveNamed.tooltip": "Whether to exempt named memories from the memory lifetime check.",
   "chesttracker.gui.editMemoryBank.integrity.periodicCheck": "Periodic Check",
   "chesttracker.gui.editMemoryBank.integrity.periodicCheck.tooltip": "Periodically check memories nearby to see if their containers are no longer there, in case something else broke them.",
+  "chesttracker.gui.editMemoryBank.integrity.enhancedCleanup": "Enhanced Cleanup",
+  "chesttracker.gui.editMemoryBank.integrity.enhancedCleanup.tooltip": "Check all remembered containers in loaded chunks before searching and when opening Chest Tracker, and remove entries whose containers no longer exist.",
   "chesttracker.gui.editMemoryBank.integrity.memoryLifetime": "Memory Lifetime",
   "chesttracker.gui.editMemoryBank.integrity.memoryLifetime.never": "Never Expires",
   "chesttracker.gui.editMemoryBank.integrity.memoryLifetime.tooltip": "How long since a memory's last access before it's considered stale and removed.",

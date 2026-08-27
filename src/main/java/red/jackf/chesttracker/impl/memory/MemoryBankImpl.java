@@ -102,13 +102,25 @@ public class MemoryBankImpl implements MemoryBank {
      * @return A list of search requests consisting of matching memories in this key.
      */
     public List<SearchResult> doSearch(Identifier key, SearchRequest request) {
-        if (!this.memoryKeys.containsKey(key)) return Collections.emptyList();
-
+        if (this.metadata.getIntegritySettings().enhancedCleanup) {
+            pruneMissingLoadedContainers(key);
+        }
         MemoryKeyImpl memoryKey = this.memoryKeys.get(key);
+        if (memoryKey == null) return Collections.emptyList();
         final Vec3 startPos = Minecraft.getInstance().player != null ? Minecraft.getInstance().player.position() : null;
         if (startPos == null) return Collections.emptyList();
 
         return memoryKey.doSearch(new SearchContext(request, startPos, this.metadata));
+    }
+
+    public int pruneMissingLoadedContainers(Identifier key) {
+        if (!this.metadata.getIntegritySettings().enhancedCleanup) return 0;
+        MemoryKeyImpl memoryKey = this.memoryKeys.get(key);
+        if (memoryKey == null) return 0;
+
+        int removed = memoryKey.pruneMissingLoadedContainers();
+        if (memoryKey.isEmpty()) this.memoryKeys.remove(key);
+        return removed;
     }
 
     /**

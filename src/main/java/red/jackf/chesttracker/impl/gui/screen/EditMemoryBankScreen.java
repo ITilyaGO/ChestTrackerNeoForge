@@ -474,6 +474,20 @@ public class EditMemoryBankScreen extends BaseUtilScreen {
                             markSettingsCustom();
                         }
                 ), SettingsTab.INTEGRITY);
+
+        addSetting(CycleButton.onOffBuilder(this.memoryBank.metadata()
+                        .getIntegritySettings().enhancedCleanup)
+                .withTooltip(b -> Tooltip.create(translatable("chesttracker.gui.editMemoryBank.integrity.enhancedCleanup.tooltip")))
+                .create(getSettingsX(0),
+                        getSettingsY(3),
+                        getSettingsWidth(2),
+                        BUTTON_HEIGHT,
+                        translatable("chesttracker.gui.editMemoryBank.integrity.enhancedCleanup"),
+                        (cycleButton, newValue) -> {
+                            this.memoryBank.metadata().getIntegritySettings().enhancedCleanup = newValue;
+                            markSettingsCustom();
+                        }
+                ), SettingsTab.INTEGRITY);
     }
 
     ////////////////

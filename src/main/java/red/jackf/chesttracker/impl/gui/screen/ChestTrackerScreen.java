@@ -96,6 +96,9 @@ public class ChestTrackerScreen extends Screen {
             return;
         }
         initializedOnce = true;
+        if (Objects.equals(ProviderUtils.getPlayersCurrentKey().orElse(null), currentMemoryKey)) {
+            bank.pruneMissingLoadedContainers(currentMemoryKey);
+        }
         var config = ChestTrackerConfig.INSTANCE.instance();
         var liveGridWidth = config.gui.gridWidth + 1;
         var liveGridHeight = config.gui.gridHeight + 1;
